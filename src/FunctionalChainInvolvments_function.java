@@ -1,4 +1,4 @@
-public class FunctionalChainInvolvments_function extends ChainElt {
+public class FunctionalChainInvolvments_function extends ChainElt implements IFunctionalChainInvolvments {
 	
 	private Function function;
 	

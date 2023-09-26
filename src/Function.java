@@ -13,16 +13,19 @@ public class Function extends ChainElt {
 	}
 	
 	public Output process() {
-		System.out.println("First function");
+		printTrace();
 		return createOutput();
 	}
 	
 	public Output process(Input input) {
+		printTrace();
 		System.out.println("Input:" + input);
 		return createOutput();
 	}
 	
 	public List<Output> process(List<Input> inputs) {
+		printTrace();
+		
 		/* Manage inputs */
 		for (Input input : inputs) {
 			System.out.println("Input:" + input);
@@ -34,9 +37,13 @@ public class Function extends ChainElt {
 		return outputs;
 	}
 	
-	public Output createOutput() {
+	private Output createOutput() {
 		/* Manage output */
 		String id = UUID.randomUUID().toString();
 		return new Output(id, "o" + id, "output");
+	}
+	
+	public void printTrace() {
+		System.out.println("Process function " + getName() + " with id " + getId());
 	}
 }

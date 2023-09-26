@@ -1,10 +1,16 @@
-public class FunctionalChainInvolvments_exchange extends ChainElt {
+public class FunctionalChainInvolvments_exchange extends ChainElt implements IFunctionalChainInvolvments {
 	
-	public FunctionalChainInvolvments_exchange(String id, String name) {
-		super(id, name);
-	}
+	FunctionalExchange exchange;
 	
 	public FunctionalChainInvolvments_exchange(String id, String name, String summary) {
 		super(id, name, summary);
+	}
+	
+	public FunctionalExchange getExchange() {
+		return exchange;
+	}
+	
+	public void setExchange(FunctionalExchange exchange) {
+		this.exchange = exchange;
 	}
 }

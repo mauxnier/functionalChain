@@ -2,11 +2,11 @@ import java.util.UUID;
 
 public class Main {
 	public static void main(String[] args) {
-		Function f1 = new Function(UUID.randomUUID().toString(), "f1", "Function1");
-		Function f2 = new Function(UUID.randomUUID().toString(), "f2", "Function2");
-		Function f3 = new Function(UUID.randomUUID().toString(), "f3", "Function3");
-		Function f4 = new Function(UUID.randomUUID().toString(), "f4", "Function4");
-		Function f5 = new Function(UUID.randomUUID().toString(), "f5", "Function5");
+		OwnedFunction f1 = new OwnedFunction(UUID.randomUUID().toString(), "f1");
+		OwnedFunction f2 = new OwnedFunction(UUID.randomUUID().toString(), "f2");
+		OwnedFunction f3 = new OwnedFunction(UUID.randomUUID().toString(), "f3");
+		OwnedFunction f4 = new OwnedFunction(UUID.randomUUID().toString(), "f4");
+		OwnedFunction f5 = new OwnedFunction(UUID.randomUUID().toString(), "f5");
 		
 		FunctionalChainInvolvments_function fcif1 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif1", "fcif1");
 		fcif1.setFunction(f1);
@@ -19,17 +19,17 @@ public class Main {
 		FunctionalChainInvolvments_function fcif5 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif5", "fcif5");
 		fcif5.setFunction(f5);
 		
-		Output o1 = new Output(UUID.randomUUID().toString(), "o1", "Output1");
-		Output o2 = new Output(UUID.randomUUID().toString(), "o2", "Output2");
-		Output o3 = new Output(UUID.randomUUID().toString(), "o3", "Output3");
-		Output o4 = new Output(UUID.randomUUID().toString(), "o4", "Output4");
-		Output o5 = new Output(UUID.randomUUID().toString(), "o5", "Output5");
+		Output o1 = new Output(UUID.randomUUID().toString(), "o1");
+		Output o2 = new Output(UUID.randomUUID().toString(), "o2");
+		Output o3 = new Output(UUID.randomUUID().toString(), "o3");
+		Output o4 = new Output(UUID.randomUUID().toString(), "o4");
+		Output o5 = new Output(UUID.randomUUID().toString(), "o5");
 		
-		Input i1 = new Input(UUID.randomUUID().toString(), "i1", "Input1");
-		Input i2 = new Input(UUID.randomUUID().toString(), "i2", "Input2");
-		Input i3 = new Input(UUID.randomUUID().toString(), "i3", "Input3");
-		Input i4 = new Input(UUID.randomUUID().toString(), "i4", "Input4");
-		Input i5 = new Input(UUID.randomUUID().toString(), "i5", "Input5");
+		Input i1 = new Input(UUID.randomUUID().toString(), "i1");
+		Input i2 = new Input(UUID.randomUUID().toString(), "i2");
+		Input i3 = new Input(UUID.randomUUID().toString(), "i3");
+		Input i4 = new Input(UUID.randomUUID().toString(), "i4");
+		Input i5 = new Input(UUID.randomUUID().toString(), "i5");
 		
 		FunctionalExchange fe1 = new FunctionalExchange(UUID.randomUUID().toString(), "fe1", "Exchange1");
 		fe1.setOutput(o1);

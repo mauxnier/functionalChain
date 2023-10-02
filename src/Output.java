@@ -1,10 +1,17 @@
-public class Output extends ChainElt {
+public class Output extends StorageMibField {
+	String ownedOutputsId;
+	String ownedOutputsName = "";
 	
-	public Output(String id, String name) {
-		super(id, name);
+	Output(String field_ownedOutputsId, String field_ownedOutputsName) {
+		ownedOutputsId = field_ownedOutputsId;
+		ownedOutputsName = field_ownedOutputsName;
 	}
 	
-	public Output(String id, String name, String summary) {
-		super(id, name, summary);
+	public String GetId() {
+		return ownedOutputsId;
+	}
+	
+	public String getName() {
+		return this.ownedOutputsName;
 	}
 }

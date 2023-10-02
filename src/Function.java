@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
-public class OwnedFunction extends StorageMibField {
+public class Function extends StorageMibField {
 	String ownedFunctionsid;
 	String ownedFunctionsName = "";
 	ArrayList<Output> outputs;
 	ArrayList<Input> inputs;
 	
-	OwnedFunction(String p_Functionsid, String p_FunctionsName) {
+	Function(String p_Functionsid, String p_FunctionsName) {
 		ownedFunctionsid = p_Functionsid;
 		ownedFunctionsName = p_FunctionsName;
 		

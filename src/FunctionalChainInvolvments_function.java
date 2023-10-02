@@ -1,16 +1,16 @@
 public class FunctionalChainInvolvments_function extends ChainElt implements IFunctionalChainInvolvments {
 	
-	private OwnedFunction function;
+	private Function function;
 	
 	public FunctionalChainInvolvments_function(String id, String name, String summary) {
 		super(id, name, summary);
 	}
 	
-	public OwnedFunction getFunction() {
+	public Function getFunction() {
 		return function;
 	}
 	
-	public void setFunction(OwnedFunction function) {
+	public void setFunction(Function function) {
 		this.function = function;
 	}
 }

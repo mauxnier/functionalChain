@@ -215,7 +215,6 @@ public class Parser {
 	 * storageMibFieldsList used only in a call to the "description" method.
 	 *
 	 * @param n
-	 * @param tab
 	 * @param storageMibFieldsList
 	 * @return
 	 */
@@ -397,28 +396,20 @@ public class Parser {
 				break;
 			case OWNEDFUNCTIONS:
 				System.out.println("OWNEDFUNCTIONS");
-				OwnedFunction ownedFunction = ExtractOwnedFunction(str, storageMibFieldsList, table);
-				System.out.println(ownedFunction.getName());
+				Function function = extractFunction(str, storageMibFieldsList, table);
+				System.out.println(function.getName());
 				break;
 			case OWNEDFUNCTIONALEXCHANGES:
 				System.out.println("OWNEDFUNCTIONALEXCHANGES");
 				FunctionalExchange functionalExchange = extractFunctionalExchange(str, storageMibFieldsList, table);
 				break;
-			case OUTPUTS:
-				System.out.println("OUTPUTS");
-				//COMPLETER
-				break;
-			case INPUTS:
-				System.out.println("INPUTS");
-				//COMPLETER
-				break;
 			default:
 		}
 	}
 	
-	private static FunctionalExchange extractFunctionalExchange(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-	
-	}
+//	private static FunctionalExchange extractFunctionalExchange(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
+//		FunctionalExchange
+//	}
 	
 	/**
 	 * Extrait les fonctions.
@@ -427,11 +418,11 @@ public class Parser {
 	 * @param table
 	 * @return
 	 */
-	private static OwnedFunction ExtractOwnedFunction(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-		OwnedFunction ownedFunctions = null;
+	private static Function extractFunction(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
+		Function function = null;
 		
-		String ownedFunctionsid = "";
-		String ownedFunctionsName = "";
+		String functionId = "";
+		String functionName = "";
 		int next_id = -1;
 		String id = "";
 		
@@ -439,14 +430,14 @@ public class Parser {
 		
 		//id, source, target
 		int index_id = str.indexOf("id=");
-		ownedFunctionsid = (String) str.subSequence(index_id + 4, index_id + 40);
+		functionId = (String) str.subSequence(index_id + 4, index_id + 40);
 		next_id = index_id + 1;
 		
 		index_id = str.indexOf("name=");
 		int index_id2 = str.indexOf("\"", index_id + 6);
-		ownedFunctionsName = (String) str.subSequence(index_id + 6, index_id2);
+		functionName = (String) str.subSequence(index_id + 6, index_id2);
 		
-		ownedFunctions = new OwnedFunction(ownedFunctionsid, ownedFunctionsName);
+		function = new Function(functionId, functionName);
 		
 		do {
 			next_id = str.indexOf("id=", next_id + 1);
@@ -456,15 +447,15 @@ public class Parser {
 			
 			/* Check if owned Features */
 			if (field instanceof Output) {
-				ownedFunctions.AddOutputs((Output) field);
+				function.AddOutputs((Output) field);
 			}
 			if (field instanceof Input) {
-				ownedFunctions.Addinputs((Input) field);
+				function.Addinputs((Input) field);
 			}
 		}
 		while (next_id != -1);
 		
 		//to be completed
-		return ownedFunctions;
+		return function;
 	}
 }

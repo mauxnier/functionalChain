@@ -2,11 +2,11 @@ import java.util.UUID;
 
 public class Main {
 	public static void main(String[] args) {
-		OwnedFunction f1 = new OwnedFunction(UUID.randomUUID().toString(), "f1");
-		OwnedFunction f2 = new OwnedFunction(UUID.randomUUID().toString(), "f2");
-		OwnedFunction f3 = new OwnedFunction(UUID.randomUUID().toString(), "f3");
-		OwnedFunction f4 = new OwnedFunction(UUID.randomUUID().toString(), "f4");
-		OwnedFunction f5 = new OwnedFunction(UUID.randomUUID().toString(), "f5");
+		Function f1 = new Function(UUID.randomUUID().toString(), "f1");
+		Function f2 = new Function(UUID.randomUUID().toString(), "f2");
+		Function f3 = new Function(UUID.randomUUID().toString(), "f3");
+		Function f4 = new Function(UUID.randomUUID().toString(), "f4");
+		Function f5 = new Function(UUID.randomUUID().toString(), "f5");
 		
 		FunctionalChainInvolvments_function fcif1 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif1", "fcif1");
 		fcif1.setFunction(f1);

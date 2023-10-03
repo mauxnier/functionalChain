@@ -1,17 +1,17 @@
 public class Output extends StorageMibField {
-	String ownedOutputsId;
-	String ownedOutputsName = "";
+	private final String id;
+	private String name = "";
 	
-	Output(String field_ownedOutputsId, String field_ownedOutputsName) {
-		ownedOutputsId = field_ownedOutputsId;
-		ownedOutputsName = field_ownedOutputsName;
+	Output(String id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 	
 	public String GetId() {
-		return ownedOutputsId;
+		return this.id;
 	}
 	
 	public String getName() {
-		return this.ownedOutputsName;
+		return this.name;
 	}
 }

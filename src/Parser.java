@@ -396,18 +396,22 @@ public class Parser {
 			case OWNEDFUNCTIONS:
 				Function function = extractFunction(str, storageMibFieldsList, table);
 				System.out.println("Function: " + function.getName());
+				table.put(function.GetId(), function);
 				break;
 			case OWNEDFUNCTIONALEXCHANGES:
-//				FunctionalExchange functionalExchange = extractFunctionalExchange(str, storageMibFieldsList, table);
-//				System.out.println("FunctionalExchange: " + functionalExchange.getName());
+				FunctionalExchange functionalExchange = extractFunctionalExchange(str, storageMibFieldsList, table);
+				System.out.println("FunctionalExchange: " + functionalExchange.GetId() + " " + functionalExchange.getName());
+				table.put(functionalExchange.GetId(), functionalExchange);
 				break;
 			case INPUTS:
 				Input input = extractInput(str, storageMibFieldsList, table);
-				System.out.println("Input: " + input.getName());
+				System.out.println("Input: " + input.GetId() + " " + input.getName());
+				table.put(input.GetId(), input);
 				break;
 			case OUTPUTS:
-//				Output output = extractOutput(str, storageMibFieldsList, table);
-//				System.out.println("Output: " + output.getName());
+				Output output = extractOutput(str, storageMibFieldsList, table);
+				System.out.println("Output: " + output.GetId() + " " + output.getName());
+				table.put(output.GetId(), output);
 				break;
 			default:
 		}
@@ -416,6 +420,21 @@ public class Parser {
 	private static IFunctionalChainInvolvments extractFunctionalChainInvolvments(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
         // _function ou _exchange
 		return null;
+	}
+	
+	private static FunctionalExchange extractFunctionalExchange(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
+		FunctionalExchange functionalExchange = null;
+		
+		int indexId = str.indexOf("id=");
+		String functionalExchangeId = (String) str.subSequence(indexId + 4, indexId + 40);
+		
+		indexId = str.indexOf("name=");
+		int indexNameEnd = str.indexOf("\"", indexId + 6);
+		String functionalExchangeName = (String) str.subSequence(indexId + 6, indexNameEnd);
+		
+		functionalExchange = new FunctionalExchange(functionalExchangeId, functionalExchangeName);
+		
+		return functionalExchange;
 	}
 	
 	private static Input extractInput(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
@@ -434,7 +453,18 @@ public class Parser {
 	}
 	
 	private static Output extractOutput(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-		return null;
+		Output output = null;
+		
+		int indexId = str.indexOf("id=");
+		String outputId = (String) str.subSequence(indexId + 4, indexId + 40);
+		
+		indexId = str.indexOf("name=");
+		int indexNameEnd = str.indexOf("\"", indexId + 6);
+		String outputName = (String) str.subSequence(indexId + 6, indexNameEnd);
+		
+		output = new Output(outputId, outputName);
+		
+		return output;
 	}
 	
 //	private static FunctionalExchange extractFunctionalExchange(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
@@ -463,7 +493,7 @@ public class Parser {
 //        return new FunctionalExchange(id, name, additionalArg);
 //    }
 	
-	private static Function extractFunction2(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
+	private static Function extractFunction(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
 		Function function = null;
 		
 		int indexId = str.indexOf("id=");
@@ -487,61 +517,17 @@ public class Parser {
 				
 				if (field != null) {
 					if (field instanceof Output) {
+						System.out.println("test O: " + ((Output) field).getName());
 						function.addOutput((Output) field);
 					}
 					if (field instanceof Input) {
+						System.out.println("test I: " + ((Input) field).getName());
 						function.addInput((Input) field);
 					}
 				}
 			}
 		} while (nextIdIndex != -1);
 		
-		return function;
-	}
-	
-	private static Function extractFunction(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-		Function function = null;
-		
-		String functionId = "";
-		String functionName = "";
-		int next_id = -1;
-		String id = "";
-		
-		StorageMibField field = null;
-		
-		/* id, source, target */
-		int index_id = str.indexOf("id=");
-		functionId = (String) str.subSequence(index_id + 4, index_id + 40);
-		next_id = index_id + 1;
-		
-		index_id = str.indexOf("name=");
-		int index_id2 = str.indexOf("\"", index_id + 6);
-		functionName = (String) str.subSequence(index_id + 6, index_id2);
-
-//		System.out.println("Function: " + functionId + " / " + functionName);
-		function = new Function(functionId, functionName);
-		
-		do {
-			next_id = str.indexOf("id=", next_id + 1);
-			id = (String) str.subSequence(next_id + 4, next_id + 40);
-			
-			/* Check if ownedFunctionalAllocation */
-			field = table.get(id);
-			System.out.println("ID: " + id);
-			System.out.println("field: " + field);
-			
-			/* Check if owned Features */
-			if (field instanceof Output) {
-				System.out.println("Output: " + ((Output) field).getName());
-				function.addOutput((Output) field);
-			}
-			if (field instanceof Input) {
-				System.out.println("Input: " + ((Input) field).getName());
-				function.addInput((Input) field);
-			}
-		} while (next_id != -1);
-		
-		//to be completed
 		return function;
 	}
 }

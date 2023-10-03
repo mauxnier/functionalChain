@@ -1,12 +1,15 @@
-public class FunctionalExchange extends ChainElt {
+public class FunctionalExchange extends StorageMibField {
 	
+	private String id;
+	private String name = "";
 	private Output output;
 	private Input input;
 	private FunctionalChainInvolvments_function source;
 	private FunctionalChainInvolvments_function target;
 	
-	public FunctionalExchange(String id, String name, String summary) {
-		super(id, name, summary);
+	public FunctionalExchange(String id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 	
 	public Output getOutput() {
@@ -39,5 +42,14 @@ public class FunctionalExchange extends ChainElt {
 	
 	public void setTarget(FunctionalChainInvolvments_function target) {
 		this.target = target;
+	}
+	
+	@Override
+	public String GetId() {
+		return this.id;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

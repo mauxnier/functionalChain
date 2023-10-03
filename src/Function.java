@@ -1,17 +1,16 @@
 import java.util.ArrayList;
 
 public class Function extends StorageMibField {
-	String ownedFunctionsid;
-	String ownedFunctionsName = "";
-	ArrayList<Output> outputs;
-	ArrayList<Input> inputs;
+	private final String id;
+	private String name = "";
+	private ArrayList<Output> outputs;
+	private ArrayList<Input> inputs;
 	
-	Function(String p_Functionsid, String p_FunctionsName) {
-		ownedFunctionsid = p_Functionsid;
-		ownedFunctionsName = p_FunctionsName;
-		
-		outputs = new ArrayList<Output>();
-		inputs = new ArrayList<Input>();
+	Function(String id, String name) {
+		this.id = id;
+		this.name = name;
+		this.outputs = new ArrayList<Output>();
+		this.inputs = new ArrayList<Input>();
 	}
 	
 	public void addOutput(Output e) {
@@ -23,10 +22,10 @@ public class Function extends StorageMibField {
 	}
 	
 	public String GetId() {
-		return ownedFunctionsid;
+		return this.id;
 	}
 	
 	public String getName() {
-		return this.ownedFunctionsName;
+		return this.name;
 	}
 }

@@ -14,7 +14,7 @@ public class FunctionalChain extends ChainElt {
 	}
 	
 	public FunctionalChainInvolvments_exchange addFunctionalExchange(FunctionalExchange exchange, FunctionalChainInvolvments_function source, FunctionalChainInvolvments_function target) {
-		FunctionalChainInvolvments_exchange fcie = new FunctionalChainInvolvments_exchange(UUID.randomUUID().toString(), "fcie_" + exchange.getName(), exchange.getSummary());
+		FunctionalChainInvolvments_exchange fcie = new FunctionalChainInvolvments_exchange(UUID.randomUUID().toString(), "fcie_" + exchange.getName());
 		exchange.setSource(source);
 		exchange.setTarget(target);
 		fcie.setExchange(exchange);

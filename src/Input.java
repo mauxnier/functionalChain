@@ -1,18 +1,17 @@
 public class Input extends StorageMibField {
-	String ownedInputsId;
-	String ownedInputsName = "";
+	private String id;
+	private String name = "";
 	
-	
-	Input(String field_ownedInputsId, String field_ownedInputsName) {
-		ownedInputsId = field_ownedInputsId;
-		ownedInputsName = field_ownedInputsName;
+	Input(String id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 	
 	public String GetId() {
-		return ownedInputsId;
+		return this.id;
 	}
 	
 	public String getName() {
-		return this.ownedInputsName;
+		return this.name;
 	}
 }

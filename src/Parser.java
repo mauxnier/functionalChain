@@ -152,6 +152,18 @@ public class Parser {
 				if (involvedField instanceof FunctionalExchange functionalExchange) {
 					FunctionalChainInvolvements_exchange functionalChainInvolvements_exchange = new FunctionalChainInvolvements_exchange(functionalExchange.GetId());
 					functionalChainInvolvements_exchange.setExchange(functionalExchange);
+					
+					/* Set source field */
+					StorageMibField sourceField = table.get(functionalChainInvolvements.getSourceId());
+					if (sourceField instanceof FunctionalChainInvolvements_function previous) {
+						functionalChainInvolvements_exchange.setSource(previous);
+					}
+					
+					/* Set target field */
+					StorageMibField targetField = table.get(functionalChainInvolvements.getTargetId());
+					if (sourceField instanceof FunctionalChainInvolvements_function next) {
+						functionalChainInvolvements_exchange.setTarget(next);
+					}
 				}
 			}
 		}
@@ -430,6 +442,12 @@ public class Parser {
 		
 		//wrt the type fill a StorageMibField object
 		switch (beacon) {
+			case OWNEDFUNCTIONALCHAINS:
+				FunctionalChain functionalChain = extractFunctionalChain(str);
+//				System.out.println("FunctionalChain: " + functionalChain.GetId());
+				storageMibFieldsList.add(functionalChain);
+				table.put(functionalChain.GetId(), functionalChain);
+				break;
 			case OWNEDFUNCTIONALCHAININVOLVMENTS:
 				FunctionalChainInvolvements functionalChainInvolvements = extractFunctionalChainInvolvements(str);
 //				System.out.println("FunctionalChainInvolvements: " + functionalChainInvolvements.GetId());
@@ -463,6 +481,27 @@ public class Parser {
 			default:
 		}
 	}
+	
+	private static FunctionalChain extractFunctionalChain(String str) {
+		FunctionalChain functionalChain;
+		
+		int indexId = str.indexOf("id=");
+		String functionalChainId = (String) str.subSequence(indexId + 4, indexId + 40);
+		
+		int indexName = str.indexOf("name=");
+		int indexNameEnd = str.indexOf("\"", indexName + 6);
+		String functionalChainName = (String) str.subSequence(indexName + 6, indexNameEnd);
+		
+		int indexSummary = str.indexOf("summary=");
+		int indexSummaryEnd = str.indexOf("\"", indexSummary + 9);
+		String functionalChainSummary = (String) str.subSequence(indexSummary + 9, indexSummaryEnd);
+		
+		functionalChain = new FunctionalChain(functionalChainId, functionalChainName, functionalChainSummary);
+		System.out.println(functionalChain.getId() + "/" + functionalChainName + "/" + functionalChainSummary);
+		
+		return functionalChain;
+	}
+	
 	
 	private static FunctionalChainInvolvements extractFunctionalChainInvolvements(String str) {
 		FunctionalChainInvolvements functionalChainInvolvements;

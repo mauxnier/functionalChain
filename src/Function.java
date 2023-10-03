@@ -14,11 +14,11 @@ public class Function extends StorageMibField {
 		inputs = new ArrayList<Input>();
 	}
 	
-	public void AddOutputs(Output e) {
+	public void addOutput(Output e) {
 		outputs.add(e);
 	}
 	
-	public void Addinputs(Input e) {
+	public void addInput(Input e) {
 		inputs.add(e);
 	}
 	

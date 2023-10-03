@@ -391,19 +391,23 @@ public class Parser {
 		//wrt the type fill a StorageMibField object
 		switch (beacon) {
 			case OWNEDFUNCTIONALCHAININVOLVMENTS:
-				IFunctionalChainInvolvments functionalChainInvolvments = extractFunctionalChainInvolvments(str, storageMibFieldsList, table);
+//				IFunctionalChainInvolvments functionalChainInvolvments = extractFunctionalChainInvolvments(str, storageMibFieldsList, table);
 				break;
 			case OWNEDFUNCTIONS:
 				Function function = extractFunction(str, storageMibFieldsList, table);
+				System.out.println("Function: " + function.getName());
 				break;
 			case OWNEDFUNCTIONALEXCHANGES:
-				FunctionalExchange functionalExchange = extractFunctionalExchange(str, storageMibFieldsList, table);
+//				FunctionalExchange functionalExchange = extractFunctionalExchange(str, storageMibFieldsList, table);
+//				System.out.println("FunctionalExchange: " + functionalExchange.getName());
 				break;
 			case INPUTS:
 				Input input = extractInput(str, storageMibFieldsList, table);
+				System.out.println("Input: " + input.getName());
 				break;
 			case OUTPUTS:
-				Output output = extractOutput(str, storageMibFieldsList, table);
+//				Output output = extractOutput(str, storageMibFieldsList, table);
+//				System.out.println("Output: " + output.getName());
 				break;
 			default:
 		}
@@ -411,41 +415,53 @@ public class Parser {
 
 	private static IFunctionalChainInvolvments extractFunctionalChainInvolvments(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
         // _function ou _exchange
+		return null;
 	}
 	
 	private static Input extractInput(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-		// extract output
+		Input input = null;
+		
+		int indexId = str.indexOf("id=");
+		String inputId = (String) str.subSequence(indexId + 4, indexId + 40);
+		
+		indexId = str.indexOf("name=");
+		int indexNameEnd = str.indexOf("\"", indexId + 6);
+		String inputName = (String) str.subSequence(indexId + 6, indexNameEnd);
+		
+		input = new Input(inputId, inputName);
+		
+		return input;
 	}
 	
 	private static Output extractOutput(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-		// extract output
+		return null;
 	}
 	
-	private static FunctionalExchange extractFunctionalExchange(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
-		String id = "";
-		String name = "";
-		String additionalArg = ""; // Assuming you have an additional attribute in FunctionalExchange
-		
-		// Extract id attribute
-		int indexId = str.indexOf("id=");
-		id = str.substring(indexId + 4, str.indexOf("", indexId + 5));
-
-        // Extract name attribute
-        int indexName = str.indexOf("name=");
-        int indexQuote = str.indexOf("", indexName + 6);
-		name = str.substring(indexName + 6, indexQuote);
-		
-		// Extract additional attribute (example)
-		int indexAdditional = str.indexOf("additionalAttribute=");
-		if (indexAdditional != -1) {
-			int indexQuoteAdditional = str.indexOf("", indexAdditional + 20);
-            additionalArg = str.substring(indexAdditional + 20, indexQuoteAdditional);
-        }
-
-        // Create and return FunctionalExchange object
-        System.out.println(id + " NAME HERE" + name);
-        return new FunctionalExchange(id, name, additionalArg);
-    }
+//	private static FunctionalExchange extractFunctionalExchange(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
+//		String id = "";
+//		String name = "";
+//		String additionalArg = ""; // Assuming you have an additional attribute in FunctionalExchange
+//
+//		// Extract id attribute
+//		int indexId = str.indexOf("id=");
+//		id = str.substring(indexId + 4, str.indexOf("", indexId + 5));
+//
+//        // Extract name attribute
+//        int indexName = str.indexOf("name=");
+//        int indexQuote = str.indexOf("", indexName + 6);
+//		name = str.substring(indexName + 6, indexQuote);
+//
+//		// Extract additional attribute (example)
+//		int indexAdditional = str.indexOf("additionalAttribute=");
+//		if (indexAdditional != -1) {
+//			int indexQuoteAdditional = str.indexOf("", indexAdditional + 20);
+//            additionalArg = str.substring(indexAdditional + 20, indexQuoteAdditional);
+//        }
+//
+//        // Create and return FunctionalExchange object
+//        System.out.println(id + " NAME HERE" + name);
+//        return new FunctionalExchange(id, name, additionalArg);
+//    }
 	
 	private static Function extractFunction2(String str, ArrayList<StorageMibField> storageMibFieldsList, Hashtable<String, StorageMibField> table) {
 		Function function = null;

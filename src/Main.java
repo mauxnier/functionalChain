@@ -8,15 +8,15 @@ public class Main {
 		Function f4 = new Function(UUID.randomUUID().toString(), "f4");
 		Function f5 = new Function(UUID.randomUUID().toString(), "f5");
 		
-		FunctionalChainInvolvments_function fcif1 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif1");
+		FunctionalChainInvolvements_function fcif1 = new FunctionalChainInvolvements_function(UUID.randomUUID().toString());
 		fcif1.setFunction(f1);
-		FunctionalChainInvolvments_function fcif2 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif2");
+		FunctionalChainInvolvements_function fcif2 = new FunctionalChainInvolvements_function(UUID.randomUUID().toString());
 		fcif2.setFunction(f2);
-		FunctionalChainInvolvments_function fcif3 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif3");
+		FunctionalChainInvolvements_function fcif3 = new FunctionalChainInvolvements_function(UUID.randomUUID().toString());
 		fcif3.setFunction(f3);
-		FunctionalChainInvolvments_function fcif4 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif4");
+		FunctionalChainInvolvements_function fcif4 = new FunctionalChainInvolvements_function(UUID.randomUUID().toString());
 		fcif4.setFunction(f4);
-		FunctionalChainInvolvments_function fcif5 = new FunctionalChainInvolvments_function(UUID.randomUUID().toString(), "fcif5");
+		FunctionalChainInvolvements_function fcif5 = new FunctionalChainInvolvements_function(UUID.randomUUID().toString());
 		fcif5.setFunction(f5);
 		
 		Output o1 = new Output(UUID.randomUUID().toString(), "o1");
@@ -50,11 +50,11 @@ public class Main {
 		System.out.println("First functional chain");
 		FunctionalChain functionalChain = new FunctionalChain(UUID.randomUUID().toString(), "fc1", "FunctionalChain");
 		
-		FunctionalChainInvolvments_exchange fcie1 = functionalChain.addFunctionalExchange(fe1, fcif1, fcif2);
-		FunctionalChainInvolvments_exchange fcie2 = functionalChain.addFunctionalExchange(fe2, fcif2, fcif3);
-		FunctionalChainInvolvments_exchange fcie3 = functionalChain.addFunctionalExchange(fe3, fcif3, fcif5);
-		FunctionalChainInvolvments_exchange fcie4 = functionalChain.addFunctionalExchange(fe4, fcif4, fcif5);
-		FunctionalChainInvolvments_exchange fcie5 = functionalChain.addFunctionalExchange(fe5, fcif2, fcif4);
+		FunctionalChainInvolvements_exchange fcie1 = functionalChain.addFunctionalExchange(fe1, fcif1, fcif2);
+		FunctionalChainInvolvements_exchange fcie2 = functionalChain.addFunctionalExchange(fe2, fcif2, fcif3);
+		FunctionalChainInvolvements_exchange fcie3 = functionalChain.addFunctionalExchange(fe3, fcif3, fcif5);
+		FunctionalChainInvolvements_exchange fcie4 = functionalChain.addFunctionalExchange(fe4, fcif4, fcif5);
+		FunctionalChainInvolvements_exchange fcie5 = functionalChain.addFunctionalExchange(fe5, fcif2, fcif4);
 		functionalChain.start();
 	}
 }

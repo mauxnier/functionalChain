@@ -3,7 +3,7 @@ import java.util.UUID;
 
 public class FunctionalChain extends ChainElt {
 	
-	private final ArrayList<FunctionalChainInvolvments_exchange> chainInvolvments = new ArrayList<>();
+	private final ArrayList<FunctionalChainInvolvements_exchange> chainInvolvments = new ArrayList<>();
 	
 	public FunctionalChain(String id, String name) {
 		super(id, name);
@@ -13,8 +13,8 @@ public class FunctionalChain extends ChainElt {
 		super(id, name, summary);
 	}
 	
-	public FunctionalChainInvolvments_exchange addFunctionalExchange(FunctionalExchange exchange, FunctionalChainInvolvments_function source, FunctionalChainInvolvments_function target) {
-		FunctionalChainInvolvments_exchange fcie = new FunctionalChainInvolvments_exchange(UUID.randomUUID().toString(), "fcie_" + exchange.getName());
+	public FunctionalChainInvolvements_exchange addFunctionalExchange(FunctionalExchange exchange, FunctionalChainInvolvements_function source, FunctionalChainInvolvements_function target) {
+		FunctionalChainInvolvements_exchange fcie = new FunctionalChainInvolvements_exchange(UUID.randomUUID().toString());
 		exchange.setSource(source);
 		exchange.setTarget(target);
 		fcie.setExchange(exchange);
@@ -26,7 +26,7 @@ public class FunctionalChain extends ChainElt {
 	 * Start le process f1 vers fn
 	 */
 	public void start() {
-		for (FunctionalChainInvolvments_exchange fcie : chainInvolvments) {
+		for (FunctionalChainInvolvements_exchange fcie : chainInvolvments) {
 			FunctionalExchange fe = fcie.getExchange();
 			System.out.println("Source : " + fe.getSource().getFunction().getName());
 			System.out.println("Output : " + fe.getOutput().getName());

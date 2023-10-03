@@ -1,15 +1,19 @@
 public class FunctionalExchange extends StorageMibField {
 	
-	private String id;
+	private final String id;
+	private final String outputId;
+	private final String inputId;
 	private String name = "";
 	private Output output;
 	private Input input;
-	private FunctionalChainInvolvments_function source;
-	private FunctionalChainInvolvments_function target;
+	private FunctionalChainInvolvements_function source;
+	private FunctionalChainInvolvements_function target;
 	
-	public FunctionalExchange(String id, String name) {
+	public FunctionalExchange(String id, String name, String outputId, String inputId) {
 		this.id = id;
 		this.name = name;
+		this.outputId = outputId;
+		this.inputId = inputId;
 	}
 	
 	public Output getOutput() {
@@ -28,19 +32,19 @@ public class FunctionalExchange extends StorageMibField {
 		this.input = input;
 	}
 	
-	public FunctionalChainInvolvments_function getSource() {
+	public FunctionalChainInvolvements_function getSource() {
 		return source;
 	}
 	
-	public void setSource(FunctionalChainInvolvments_function source) {
+	public void setSource(FunctionalChainInvolvements_function source) {
 		this.source = source;
 	}
 	
-	public FunctionalChainInvolvments_function getTarget() {
+	public FunctionalChainInvolvements_function getTarget() {
 		return target;
 	}
 	
-	public void setTarget(FunctionalChainInvolvments_function target) {
+	public void setTarget(FunctionalChainInvolvements_function target) {
 		this.target = target;
 	}
 	
@@ -51,5 +55,13 @@ public class FunctionalExchange extends StorageMibField {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getOutputId() {
+		return outputId;
+	}
+	
+	public String getInputId() {
+		return inputId;
 	}
 }

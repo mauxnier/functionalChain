@@ -21,6 +21,14 @@ public class Function extends StorageMibField {
 		inputs.add(e);
 	}
 	
+	public ArrayList<Output> getOutputs() {
+		return outputs;
+	}
+	
+	public ArrayList<Input> getInputs() {
+		return inputs;
+	}
+	
 	public String GetId() {
 		return this.id;
 	}

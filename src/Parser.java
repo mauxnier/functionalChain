@@ -13,6 +13,9 @@ import java.util.List;
 
 public class Parser {
 	
+	public static ArrayList<FunctionalChain> CHAINS = new ArrayList<>();
+	public static Hashtable<String, StorageMibField> HASHTABLE = new Hashtable<>();
+	
 	/**
 	 * Main method whose behavior is:
 	 * - Parse of the original xml file thanks to the DOM library.
@@ -40,7 +43,8 @@ public class Parser {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			
 			// input xml file */
-			File fileXML = new File("src/resources/TP_modelling.capella");
+//			File fileXML = new File("src/resources/TP_modelling.capella");
+			File fileXML = new File("src/resources/Communication.capella");
 			//File fileXML = new File("Cours_ENSIBS.capella");
 			
 			/* DOM library element used to store elements of xml files (only syntactic) */
@@ -86,8 +90,6 @@ public class Parser {
 		Hashtable<String, StorageMibField> mibFieldTable = new Hashtable<String, StorageMibField>();
 		Hashtable<String, ArrayList<String>> oidToOpTable = new Hashtable<String, ArrayList<String>>();
 		ParseAndStore(root, "Logical Architecture", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-		System.out.println("Test");
-		System.out.println(table.size());
 		
 		/* Après le parsing on effectue le linkage, car la table est complétement remplie */
 		constructLinks(storageMibFieldsList, table);
@@ -98,6 +100,10 @@ public class Parser {
 		for (FunctionalChain c : chains) {
 			System.out.println(c.getName() + " of size: " + c.getChainInvolvements().size());
 		}
+		
+		/* Variables globales pour après */
+		CHAINS = chains;
+		HASHTABLE = table;
 		
 		System.out.println("==== End of parsing ====");
 	}

@@ -577,7 +577,7 @@
         <ownedLogicalFunctions xsi:type="org.polarsys.capella.core.data.la:LogicalFunction"
             id="c59fdf2c-c49e-46a7-8d90-9cffe834bccb" name="Root Logical Function">
           <ownedFunctionalChains xsi:type="org.polarsys.capella.core.data.fa:FunctionalChain"
-              id="eb5e63f5-d9c8-454d-be5f-66f688369e8f" name="FunctionalChain 2" summary="Threat">
+              id="eb5e63f5-d9c8-454d-be5f-66f688369e8f" name="FunctionalChain 2" summary="THREAT">
             <ownedFunctionalChainInvolvements xsi:type="org.polarsys.capella.core.data.fa:FunctionalChainInvolvementLink"
                 id="96f97284-d04c-4471-ba67-3032a0f8e10e" involved="#7fb49872-6495-482a-9907-385e981f98fd"
                 source="#9b27e9a7-2c52-49ed-bd93-df0046a38ad3" target="#0e2b8594-5435-4f7f-baf9-423b7065d21a"/>

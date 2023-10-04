@@ -1,9 +1,9 @@
-public class FunctionalChainInvolvements_function extends FunctionalChainInvolvements {
+public class FunctionalChainInvolvements_function extends AFunctionalChainInvolvements {
 	
 	private Function function;
 	
-	public FunctionalChainInvolvements_function(String id) {
-		super(id);
+	public FunctionalChainInvolvements_function(String id, String involvedId) {
+		super(id, involvedId);
 	}
 	
 	public Function getFunction() {

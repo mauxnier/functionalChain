@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class Parser {
 	
@@ -85,14 +86,20 @@ public class Parser {
 		Hashtable<String, StorageMibField> mibFieldTable = new Hashtable<String, StorageMibField>();
 		Hashtable<String, ArrayList<String>> oidToOpTable = new Hashtable<String, ArrayList<String>>();
 		ParseAndStore(root, "Logical Architecture", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-/*       ParseAndStore(root, "oa", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-       ParseAndStore(root, "sa", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-       ParseAndStore(root, "la", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-       ParseAndStore(root, "pa", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-       ParseAndStore(root, "datavalue", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-       ParseAndStore(root, "classes", storageMibFieldsList, mibFieldTable, oidToOpTable, table);
-*/
-		System.out.println("end of parsing");
+		System.out.println("Test");
+		System.out.println(table.size());
+		
+		/* Après le parsing on effectue le linkage, car la table est complétement remplie */
+		constructLinks(storageMibFieldsList, table);
+		
+		/* Après le linkage on ajoute à nos FunctionalChain les FunctionalChainInvolvements associés */
+		ArrayList<FunctionalChain> chains = (ArrayList<FunctionalChain>) constructChains(table);
+		
+		for (FunctionalChain c : chains) {
+			System.out.println(c.getName() + " of size: " + c.getChainInvolvements().size());
+		}
+		
+		System.out.println("==== End of parsing ====");
 	}
 	
 	/**
@@ -114,19 +121,36 @@ public class Parser {
 					description(n2, "", storageMibFieldsList, operationTable, oidToOpTable, pkgName, table);
 				}
 			}
-			
-			/* Après le parsing on effectue le linkage, car la table est complétement remplie */
-			constructLinks(storageMibFieldsList, table);
 		}
 	}
 	
+	private static List<FunctionalChain> constructChains(Hashtable<String, StorageMibField> table) {
+		ArrayList<FunctionalChain> chains = new ArrayList<>();
+		for (StorageMibField field : table.values()) {
+			if (field instanceof FunctionalChain functionalChain) {
+				for (String id : functionalChain.getChainInvolvementsIds()) {
+					StorageMibField chainInvolvementField = table.get(id);
+					if (chainInvolvementField instanceof FunctionalChainInvolvements_function involvementsFunction) {
+						functionalChain.addChainInvolvements(involvementsFunction);
+					}
+					if (chainInvolvementField instanceof FunctionalChainInvolvements_exchange involvementsExchange) {
+						functionalChain.addChainInvolvements(involvementsExchange);
+					}
+				}
+				chains.add(functionalChain);
+			}
+		}
+		return chains;
+	}
+	
 	private static void constructLinks(ArrayList<StorageMibField> storageMibFields, Hashtable<String, StorageMibField> table) {
-		for (StorageMibField field : storageMibFields) {
+		for (StorageMibField field : storageMibFields) { //TODO peut-etre foreach direct sur la table
 //			if (field instanceof Function) {
 //				Function function = ((Function) field);
 //
 //				//TODO peut-etre mettre input output ici
 //			}
+			/* LINKING FUNCTIONAL EXCHANGE */
 			if (field instanceof FunctionalExchange functionalExchange) {
 				/* Link output */
 				StorageMibField output = table.get(functionalExchange.getOutputId());
@@ -139,31 +163,42 @@ public class Parser {
 				if (input instanceof Input) {
 					functionalExchange.setInput((Input) input);
 				}
+				
+				/* Remplace l'élément complet */
+				table.replace(functionalExchange.GetId(), functionalExchange);
 			}
-			if (field instanceof FunctionalChainInvolvements functionalChainInvolvements) {
+			/* LINKING FUNCTIONAL CHAIN INVOLVEMENTS */
+			if (field instanceof AFunctionalChainInvolvements functionalChainInvolvements) {
 				/* Involved pointe vers "Function" ou vers "FunctionalExchange" */
 				StorageMibField involvedField = table.get(functionalChainInvolvements.getInvolvedId());
-				System.out.println("INVOLVEDID: " + involvedField.GetId());
 				
+				/* CASE FUNCTION */
 				if (involvedField instanceof Function function) {
-					FunctionalChainInvolvements_function functionalChainInvolvements_function = new FunctionalChainInvolvements_function(function.GetId());
+					FunctionalChainInvolvements_function functionalChainInvolvements_function = (FunctionalChainInvolvements_function) functionalChainInvolvements;
 					functionalChainInvolvements_function.setFunction(function);
+					
+					/* Remplace l'élément complet */
+					table.replace(functionalChainInvolvements_function.GetId(), functionalChainInvolvements_function);
 				}
+				/* CASE FUNCTIONAL EXCHANGE */
 				if (involvedField instanceof FunctionalExchange functionalExchange) {
-					FunctionalChainInvolvements_exchange functionalChainInvolvements_exchange = new FunctionalChainInvolvements_exchange(functionalExchange.GetId());
+					FunctionalChainInvolvements_exchange functionalChainInvolvements_exchange = (FunctionalChainInvolvements_exchange) functionalChainInvolvements;
 					functionalChainInvolvements_exchange.setExchange(functionalExchange);
 					
 					/* Set source field */
-					StorageMibField sourceField = table.get(functionalChainInvolvements.getSourceId());
+					StorageMibField sourceField = table.get(functionalChainInvolvements_exchange.getSourceId());
 					if (sourceField instanceof FunctionalChainInvolvements_function previous) {
 						functionalChainInvolvements_exchange.setSource(previous);
 					}
 					
 					/* Set target field */
-					StorageMibField targetField = table.get(functionalChainInvolvements.getTargetId());
-					if (sourceField instanceof FunctionalChainInvolvements_function next) {
+					StorageMibField targetField = table.get(functionalChainInvolvements_exchange.getTargetId());
+					if (targetField instanceof FunctionalChainInvolvements_function next) {
 						functionalChainInvolvements_exchange.setTarget(next);
 					}
+					
+					/* Remplace l'élément complet */
+					table.replace(functionalChainInvolvements_exchange.GetId(), functionalChainInvolvements_exchange);
 				}
 			}
 		}
@@ -449,7 +484,7 @@ public class Parser {
 				table.put(functionalChain.GetId(), functionalChain);
 				break;
 			case OWNEDFUNCTIONALCHAININVOLVMENTS:
-				FunctionalChainInvolvements functionalChainInvolvements = extractFunctionalChainInvolvements(str);
+				AFunctionalChainInvolvements functionalChainInvolvements = extractFunctionalChainInvolvements(str);
 //				System.out.println("FunctionalChainInvolvements: " + functionalChainInvolvements.GetId());
 				storageMibFieldsList.add(functionalChainInvolvements);
 				table.put(functionalChainInvolvements.GetId(), functionalChainInvolvements);
@@ -497,14 +532,30 @@ public class Parser {
 		String functionalChainSummary = (String) str.subSequence(indexSummary + 9, indexSummaryEnd);
 		
 		functionalChain = new FunctionalChain(functionalChainId, functionalChainName, functionalChainSummary);
-		System.out.println(functionalChain.getId() + "/" + functionalChainName + "/" + functionalChainSummary);
+		
+		// Recherche des éléments <ownedFunctionalChainInvolvements>
+		int startIndex = str.indexOf("<ownedFunctionalChainInvolvements");
+		while (startIndex != -1) {
+			int endIndex = str.indexOf("</ownedFunctionalChainInvolvements>", startIndex);
+			String subStr = str.substring(startIndex, endIndex);
+			String involvementId = extractInvolvementId(subStr);
+			functionalChain.addChainInvolvementsId(involvementId);
+			startIndex = str.indexOf("<ownedFunctionalChainInvolvements", endIndex);
+		}
 		
 		return functionalChain;
 	}
 	
+	// Fonction pour extraire l'ID de FunctionalChainInvolvement (utilisée à l'intérieur de la fonction extractFunctionalChain)
+	private static String extractInvolvementId(String str) {
+		int indexId = str.indexOf("id=");
+		String involvementId = (String) str.subSequence(indexId + 4, indexId + 40);
+		return involvementId;
+	}
 	
-	private static FunctionalChainInvolvements extractFunctionalChainInvolvements(String str) {
-		FunctionalChainInvolvements functionalChainInvolvements;
+	
+	private static AFunctionalChainInvolvements extractFunctionalChainInvolvements(String str) {
+		AFunctionalChainInvolvements functionalChainInvolvements;
 		
 		int indexId = str.indexOf("id=");
 		String id = (String) str.subSequence(indexId + 4, indexId + 40);
@@ -536,7 +587,11 @@ public class Parser {
 			targetId = targetId.replace("#", "");
 		}
 		
-		functionalChainInvolvements = new FunctionalChainInvolvements(id, involvedId, sourceId, targetId);
+		if (sourceId != null && targetId != null) {
+			functionalChainInvolvements = new FunctionalChainInvolvements_exchange(id, involvedId, sourceId, targetId);
+		} else {
+			functionalChainInvolvements = new FunctionalChainInvolvements_function(id, involvedId);
+		}
 		
 		return functionalChainInvolvements;
 	}

@@ -6,8 +6,8 @@ public class FunctionalChain extends StorageMibField {
 	private final String id;
 	private String name = "";
 	private String summary;
-	
-	private final ArrayList<FunctionalChainInvolvements_exchange> chainInvolvments = new ArrayList<>();
+	private final ArrayList<String> chainInvolvementsIds = new ArrayList<>();
+	private final ArrayList<AFunctionalChainInvolvements> chainInvolvements = new ArrayList<>();
 	
 	public FunctionalChain(String id, String name, String summary) {
 		this.id = id;
@@ -40,5 +40,29 @@ public class FunctionalChain extends StorageMibField {
 	@Override
 	public String GetId() {
 		return this.id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getSummary() {
+		return summary;
+	}
+	
+	public ArrayList<String> getChainInvolvementsIds() {
+		return chainInvolvementsIds;
+	}
+	
+	public void addChainInvolvementsId(String id) {
+		this.chainInvolvementsIds.add(id);
+	}
+	
+	public ArrayList<AFunctionalChainInvolvements> getChainInvolvements() {
+		return chainInvolvements;
+	}
+	
+	public void addChainInvolvements(AFunctionalChainInvolvements involvements) {
+		this.chainInvolvements.add(involvements);
 	}
 }

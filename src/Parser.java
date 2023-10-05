@@ -533,11 +533,7 @@ public class Parser {
 		int indexNameEnd = str.indexOf("\"", indexName + 6);
 		String functionalChainName = (String) str.subSequence(indexName + 6, indexNameEnd);
 		
-		int indexSummary = str.indexOf("summary=");
-		int indexSummaryEnd = str.indexOf("\"", indexSummary + 9);
-		String functionalChainSummary = (String) str.subSequence(indexSummary + 9, indexSummaryEnd);
-		
-		functionalChain = new FunctionalChain(functionalChainId, functionalChainName, functionalChainSummary);
+		functionalChain = new FunctionalChain(functionalChainId, functionalChainName);
 		
 		// Recherche des éléments <ownedFunctionalChainInvolvements>
 		int startIndex = str.indexOf("<ownedFunctionalChainInvolvements");
@@ -575,7 +571,13 @@ public class Parser {
 			involvedId = involvedId.replace("#", "");
 		}
 		
-		/* Rechercher l'attribut source */
+		/* Rechercher l'attribut source pour _exchange */
+		String summary = null;
+		int indexSummary = str.indexOf("summary=");
+		int indexSummaryEnd = str.indexOf("\"", indexSummary + 9);
+		summary = (String) str.subSequence(indexSummary + 9, indexSummaryEnd);
+		
+		/* Rechercher l'attribut source pour _exchange */
 		String sourceId = null;
 		int indexSource = str.indexOf("source=");
 		if (indexSource != -1) {
@@ -584,7 +586,7 @@ public class Parser {
 			sourceId = sourceId.replace("#", "");
 		}
 		
-		/* Rechercher l'attribut target */
+		/* Rechercher l'attribut target pour _exchange */
 		String targetId = null;
 		int indexTarget = str.indexOf("target=");
 		if (indexTarget != -1) {
@@ -596,7 +598,7 @@ public class Parser {
 		if (sourceId != null && targetId != null) {
 			functionalChainInvolvements = new FunctionalChainInvolvements_exchange(id, involvedId, sourceId, targetId);
 		} else {
-			functionalChainInvolvements = new FunctionalChainInvolvements_function(id, involvedId);
+			functionalChainInvolvements = new FunctionalChainInvolvements_function(id, involvedId, summary);
 		}
 		
 		return functionalChainInvolvements;

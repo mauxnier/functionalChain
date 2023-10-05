@@ -11,30 +11,45 @@ public class Main {
 		ArrayList<FunctionalChain> chains = Parser.CHAINS;
 		Hashtable<String, StorageMibField> table = Parser.HASHTABLE;
 		
-		/* Algorithme pour savoir la contamination */
+		
+		FunctionalChainInvolvements_function initialFunctionInvolvements = null;
 		ArrayList<Function> contaminatedFunctions = new ArrayList<>();
 		String flag = "THREAT";
+		
+		/* Recherche du premier élément contaminé */
 		for (FunctionalChain chain : chains) {
-			if (Objects.equals(chain.getSummary(), flag)) {
-				System.out.println("Chaine " + chain.getName() + " contaminée.");
-				
-				for (AFunctionalChainInvolvements involvements : chain.getChainInvolvements()) {
-					if (involvements instanceof  FunctionalChainInvolvements_exchange involvementsExchange) {
-						FunctionalExchange initialExchange = involvementsExchange.getExchange();
-						Function fo = getFunctionByOutputId(initialExchange.getOutputId(), table);
-						if (!contaminatedFunctions.contains(fo)) contaminatedFunctions.add(fo);
-						processExchange(initialExchange, table, contaminatedFunctions);
+			for (AFunctionalChainInvolvements involvements : chain.getChainInvolvements()) {
+				if (involvements instanceof FunctionalChainInvolvements_function involvementsFunction) {
+					if (Objects.equals(involvementsFunction.getSummary(), flag)) {
+						initialFunctionInvolvements = involvementsFunction;
+						System.out.println("Chaine " + chain.getName() + " contaminée.");
+						Function initialFunction = involvementsFunction.getFunction();
+						if (!contaminatedFunctions.contains(initialFunction)) contaminatedFunctions.add(initialFunction);
 					}
-					/* Si FunctionalChainInvolvements_function on fait rien car le exchange pointe sur les functions déjà */
 				}
 			}
 		}
+		
+		/* Algorithme pour savoir la contamination */
+		FunctionalChainInvolvements_exchange exchange = getFunctionalExchangeFromFunctionalFunction(initialFunctionInvolvements.GetId(), table);
+		processExchange(exchange.getExchange(), table, contaminatedFunctions);
 		
 		/* On affiche les fonctions contaminées */
 		System.out.println("Les fonctions contaminées sont : ");
 		for (Function function : contaminatedFunctions) {
 			System.out.println("- " + function.getName());
 		}
+	}
+	
+	public static FunctionalChainInvolvements_exchange getFunctionalExchangeFromFunctionalFunction(String idOfSource, Hashtable<String, StorageMibField> table) {
+		for (StorageMibField field : table.values()) {
+			if (field instanceof FunctionalChainInvolvements_exchange exchange) {
+				if (exchange.getSource().GetId().equals(idOfSource)) {
+					return exchange;
+				}
+			}
+		}
+		return null; // Retourne null si aucune correspondance n'est trouvée.
 	}
 	
 	public static void processExchange(FunctionalExchange exchange, Hashtable<String, StorageMibField> table, ArrayList<Function> contaminatedFunctions) {
